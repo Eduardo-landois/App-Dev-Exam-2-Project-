@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Oil Change",
+        "description": "Drain old oil, replace the oil filter, and refill with new oil.",
+        "price": 49.99,
+        "estimatedTime": 30
+    },
+    {
+        "id": 2,
+        "name": "Brake Pad Replacement",
+        "description": "Replace the front or rear brake pads and inspect the rotors.",
+        "price": 149.99,
+        "estimatedTime": 90
+    },
+    {
+        "id": 3,
+        "name": "Tire Rotation",
+        "description": "Rotate all four tires so they wear evenly.",
+        "price": 29.99,
+        "estimatedTime": 30
+    },
+    {
+        "id": 4,
+        "name": "Battery Replacement",
+        "description": "Test the old battery and install a new one.",
+        "price": 179.99,
+        "estimatedTime": 30
+    },
+    {
+        "id": 5,
+        "name": "Engine Diagnostic",
+        "description": "Scan the computer for error codes and find the problem.",
+        "price": 89.99,
+        "estimatedTime": 60
+    },
+    {
+        "id": 6,
+        "name": "A/C Recharge",
+        "description": "Check the A/C system for leaks and recharge the refrigerant.",
+        "price": 119.99,
+        "estimatedTime": 60
+    }
+]
