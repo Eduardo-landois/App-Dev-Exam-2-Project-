@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1 class="centered">Our Services</h1>
+  <p class="lead centered">Prices and estimated times for every job we offer.</p>
+
+  <div class="row">
+    <% if (locals.services) { %>
+      <% services.forEach((service) => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h4 class="card-title"><%= service.name %></h4>
+              <p class="card-text"><%= service.description %></p>
+            </div>
+            <div class="card-footer">
+              <span class="price">$<%= Number(service.price).toFixed(2) %></span>
+              <span class="float-right"><i class="far fa-clock"></i> <%= service.estimatedTime %> min</span>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

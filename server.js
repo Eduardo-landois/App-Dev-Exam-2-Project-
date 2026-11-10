@@ -1,4 +1,5 @@
 import express from "express";
+import pageRoutes from "./routes/pages.js";
 
 const app = express();
 const port = 3000;
@@ -7,13 +8,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// GET request for the home page
-// Test: GET http://localhost:3000/
-app.get("/", (req, res) => {
-    res.status(200).render("index.ejs");
-});
-
-// TODO: move page routes into routes/pages.js and mount them with app.use("/", pageRoutes);
+// all page routes (/, /services) live in routes/pages.js
+app.use("/", pageRoutes);
 
 app.listen(port, () => {
     console.log(`Server started listening on port ${port}`);
