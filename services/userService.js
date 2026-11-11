@@ -4,9 +4,9 @@ import User from "./classes/User.js";
 const saltRounds = 10;
 
 // In-memory list of users in a array acting like a database 
-// NOTE: users added while the app is running are lost when the server restarts
+// users get lost when server restarts
 const users = [
-    // test manager account -> email: manager@autorepair.com  password: manager123
+    // make manager account -> email: manager@autorepair.com  password: manager123
     new User(1, "Shop Manager", "manager@autorepair.com", bcrypt.hashSync("manager123", saltRounds), "manager")
 ];
 
