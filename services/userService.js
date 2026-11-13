@@ -35,4 +35,18 @@ function addUser(name, email, hash) {
     return newUser;
 }
 
-export default { users, saltRounds, findUserByEmail, findUserById, addUser };
+// return every customer for the manager page
+// leaves out the password hash so it never gets sent to a page
+function getAllCustomers() {
+    return users
+        .filter((user) => user.role === "customer")
+        .map((user) => {
+            return {
+                id: user.id,
+                name: user.name,
+                email: user.email
+            };
+        });
+}
+
+export default { users, saltRounds, findUserByEmail, findUserById, addUser, getAllCustomers };
