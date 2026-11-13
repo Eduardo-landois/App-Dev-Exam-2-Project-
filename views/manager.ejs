@@ -1,0 +1,128 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1><i class="fas fa-clipboard-list"></i> Shop Manager</h1>
+  <p class="lead">All customers, appointments, and invoices in one place.</p>
+
+  <!-- error message from the controller (already invoiced or not found) -->
+  <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
+  <!-- all appointments -->
+  <h3 class="mt-4">Appointments</h3>
+  <% if (locals.appointments && appointments.length > 0) { %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Service</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% appointments.forEach((appointment) => { %>
+          <tr>
+            <td><%= appointment.id %></td>
+            <td><%= appointment.date %></td>
+            <td><%= appointment.time %></td>
+            <td><%= appointment.customer ? appointment.customer.name : "Unknown customer" %></td>
+            <td>
+              <% if (appointment.vehicle) { %>
+                <%= appointment.vehicle.year %> <%= appointment.vehicle.make %> <%= appointment.vehicle.model %> (<%= appointment.vehicle.licensePlate %>)
+              <% } else { %>
+                <span class="text-muted">Removed vehicle</span>
+              <% } %>
+            </td>
+            <td><%= appointment.service ? appointment.service.name : "Unknown service" %></td>
+            <td><%= appointment.status %></td>
+            <td>
+              <% if (appointment.status === "upcoming") { %>
+                <!-- Makes POST request to /manager/appointments/:id/complete route -->
+                <form action="/manager/appointments/<%= appointment.id %>/complete" method="POST">
+                  <button type="submit" class="btn btn-outline-success btn-sm">Mark Completed</button>
+                </form>
+              <% } else if (appointment.invoice) { %>
+                <span class="text-muted">Invoice #<%= appointment.invoice.id %></span>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="text-muted">No appointments yet.</p>
+  <% } %>
+
+  <!-- all invoices -->
+  <h3 class="mt-5">Invoices</h3>
+  <% if (locals.invoices && invoices.length > 0) { %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Appointment #</th>
+          <th>Customer</th>
+          <th>Date Issued</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% invoices.forEach((invoice) => { %>
+          <tr>
+            <td><%= invoice.id %></td>
+            <td><%= invoice.appointmentId %></td>
+            <td><%= invoice.customer ? invoice.customer.name : "Unknown customer" %></td>
+            <td><%= invoice.dateIssued %></td>
+            <td class="price">$<%= Number(invoice.total).toFixed(2) %></td>
+            <td><%= invoice.paid ? "Paid" : "Unpaid" %></td>
+            <td>
+              <% if (!invoice.paid) { %>
+                <!-- Makes POST request to /manager/invoices/:id/paid route -->
+                <form action="/manager/invoices/<%= invoice.id %>/paid" method="POST">
+                  <button type="submit" class="btn btn-outline-dark btn-sm">Mark Paid</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="text-muted">No invoices yet. Mark an appointment completed to create one.</p>
+  <% } %>
+
+  <!-- all customers -->
+  <h3 class="mt-5">Customers</h3>
+  <% if (locals.customers && customers.length > 0) { %>
+    <table class="table table-striped mb-5">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% customers.forEach((customer) => { %>
+          <tr>
+            <td><%= customer.id %></td>
+            <td><%= customer.name %></td>
+            <td><%= customer.email %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="text-muted mb-5">No customers have registered yet.</p>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
