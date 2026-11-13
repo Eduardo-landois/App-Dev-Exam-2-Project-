@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import pageRoutes from "./routes/pages.js";
 import authRoutes from "./routes/auth.js";
 import vehicleRoutes from "./routes/vehicles.js";
+import appointmentRoutes from "./routes/appointments.js";
 import userService from "./services/userService.js";
 
 const app = express();
@@ -42,6 +43,8 @@ app.use("/", pageRoutes);
 app.use("/", authRoutes);
 // garage routes (/garage, /garage/:id/delete) live in routes/vehicles.js
 app.use("/", vehicleRoutes);
+// appointment routes (/appointments, /appointments/:id/cancel) live in routes/appointments.js
+app.use("/", appointmentRoutes);
 
 
 // the login form sends "username" (the email) and "password"

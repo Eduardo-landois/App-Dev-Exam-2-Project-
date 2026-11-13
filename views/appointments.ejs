@@ -1,0 +1,107 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5">
+  <h1><i class="far fa-calendar-alt"></i> My Appointments</h1>
+  <p class="lead">Book a service for one of your vehicles and pick a time that works for you.</p>
+
+  <!-- error message from the controller (bad form input, slot taken, or not found) -->
+  <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
+  <!-- book an appointment -->
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="card mb-5">
+        <div class="card-body">
+          <h4 class="card-title">Book an Appointment</h4>
+
+          <% if (locals.vehicles && vehicles.length > 0) { %>
+            <!-- Makes POST request to /appointments route -->
+            <form action="/appointments" method="POST">
+              <div class="form-group">
+                <label for="vehicleId">Vehicle</label>
+                <select class="form-control" id="vehicleId" name="vehicleId" required>
+                  <% vehicles.forEach((vehicle) => { %>
+                    <option value="<%= vehicle.id %>"><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %> (<%= vehicle.licensePlate %>)</option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="serviceId">Service</label>
+                <select class="form-control" id="serviceId" name="serviceId" required>
+                  <% services.forEach((service) => { %>
+                    <option value="<%= service.id %>"><%= service.name %> - $<%= Number(service.price).toFixed(2) %> (<%= service.estimatedTime %> min)</option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" id="date" name="date" min="<%= today %>" required>
+              </div>
+              <div class="form-group">
+                <label for="time">Time Slot</label>
+                <select class="form-control" id="time" name="time" required>
+                  <% timeSlots.forEach((slot) => { %>
+                    <option value="<%= slot %>"><%= slot %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-dark">Book Appointment</button>
+            </form>
+          <% } else { %>
+            <!-- no vehicles yet, so send them to the garage first -->
+            <p class="text-muted">You need a vehicle before you can book. <a href="/garage">Add one in My Garage</a>.</p>
+          <% } %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- the user's appointments -->
+  <h3>Your Appointments</h3>
+  <% if (locals.appointments && appointments.length > 0) { %>
+    <table class="table table-striped mb-5">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Vehicle</th>
+          <th>Service</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% appointments.forEach((appointment) => { %>
+          <tr>
+            <td><%= appointment.date %></td>
+            <td><%= appointment.time %></td>
+            <td>
+              <% if (appointment.vehicle) { %>
+                <%= appointment.vehicle.year %> <%= appointment.vehicle.make %> <%= appointment.vehicle.model %>
+              <% } else { %>
+                <span class="text-muted">Removed vehicle</span>
+              <% } %>
+            </td>
+            <td><%= appointment.service ? appointment.service.name : "Unknown service" %></td>
+            <td><%= appointment.status %></td>
+            <td>
+              <% if (appointment.status === "upcoming") { %>
+                <!-- Makes POST request to /appointments/:id/cancel route -->
+                <form action="/appointments/<%= appointment.id %>/cancel" method="POST">
+                  <button type="submit" class="btn btn-outline-danger btn-sm">Cancel</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="text-muted mb-5">You have no appointments yet.</p>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>
