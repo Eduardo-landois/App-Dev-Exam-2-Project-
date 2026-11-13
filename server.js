@@ -8,6 +8,7 @@ import pageRoutes from "./routes/pages.js";
 import authRoutes from "./routes/auth.js";
 import vehicleRoutes from "./routes/vehicles.js";
 import appointmentRoutes from "./routes/appointments.js";
+import managerRoutes from "./routes/manager.js";
 import userService from "./services/userService.js";
 
 const app = express();
@@ -45,6 +46,8 @@ app.use("/", authRoutes);
 app.use("/", vehicleRoutes);
 // appointment routes (/appointments, /appointments/:id/cancel) live in routes/appointments.js
 app.use("/", appointmentRoutes);
+// manager routes (/manager, complete appointment, mark invoice paid) live in routes/manager.js
+app.use("/", managerRoutes);
 
 
 // the login form sends "username" (the email) and "password"
