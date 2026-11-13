@@ -1,7 +1,6 @@
 import express from "express";
 import authController from "../controllers/authController.js";
 
-// A Router is a "mini Express app" that holds a related group of routes
 const router = express.Router();
 
 // Test: GET http://localhost:3000/register

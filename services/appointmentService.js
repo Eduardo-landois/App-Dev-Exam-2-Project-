@@ -79,6 +79,19 @@ function cancelAppointment(id, userId) {
     return true;
 }
 
+// mark an appointment as completed (manager only), but only if it is still upcoming
+// returns the completed appointment, or undefined if not found or not upcoming
+function completeAppointment(id) {
+    const appointment = getAppointmentById(id);
+
+    if (!appointment || appointment.status !== "upcoming") {
+        return undefined;
+    }
+
+    appointment.status = "completed";
+    return appointment;
+}
+
 export default {
     appointments,
     timeSlots,
@@ -90,5 +103,6 @@ export default {
     getAllAppointments,
     getAppointmentById,
     bookAppointment,
-    cancelAppointment
+    cancelAppointment,
+    completeAppointment
 };

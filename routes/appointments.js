@@ -1,10 +1,9 @@
 import express from "express";
 import appointmentController from "../controllers/appointmentController.js";
 
-// A Router is a "mini Express app" that holds a related group of routes
 const router = express.Router();
 
-// show the booking form and the logged in user's appointments
+// show the booking form for a new appointment
 // Test: GET http://localhost:3000/appointments
 router.get("/appointments", appointmentController.showAppointments);
 
