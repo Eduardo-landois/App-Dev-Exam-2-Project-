@@ -10,6 +10,7 @@ import vehicleRoutes from "./routes/vehicles.js";
 import appointmentRoutes from "./routes/appointments.js";
 import managerRoutes from "./routes/manager.js";
 import userService from "./services/userService.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 const port = 3000;
@@ -48,6 +49,12 @@ app.use("/", vehicleRoutes);
 app.use("/", appointmentRoutes);
 // manager routes (/manager, complete appointment, mark invoice paid) live in routes/manager.js
 app.use("/", managerRoutes);
+
+// ERROR HANDLING MUST BE AFTER ALL THE ROUTES
+// no route matched the URL -> 404 page
+app.use(errorHandler.notFound);
+// anything that crashed -> error page (must be the very last app.use)
+app.use(errorHandler.errorHandler);
 
 
 // the login form sends "username" (the email) and "password"
