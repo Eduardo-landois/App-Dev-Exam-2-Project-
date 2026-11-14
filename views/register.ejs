@@ -4,6 +4,11 @@
   <h1>Register</h1>
   <p class="lead">Create an account to save your vehicles and book appointments.</p>
 
+  <!-- error message from the controller (missing name, email, or password) -->
+  <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+  <% } %>
+
   <div class="row">
     <div class="col-sm-8">
       <div class="card">
