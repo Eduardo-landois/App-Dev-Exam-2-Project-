@@ -2,6 +2,11 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import userService from "../services/userService.js";
 
+// validation helper (same as Homework 6)
+function isGoodStringParam(param) {
+    return typeof param === "string" && param.trim().length > 0;
+}
+
 // GET request for the register page
 // Test: GET http://localhost:3000/register
 function showRegister(req, res) {
@@ -20,6 +25,14 @@ function register(req, res) {
     const name = req.body.name;
     const email = req.body.username;
     const password = req.body.password;
+
+    // validate Params BEFORE anything else
+    // (if a field is missing, addUser would crash on .trim() inside the bcrypt callback)
+    if (!isGoodStringParam(name) || !isGoodStringParam(email) || !isGoodStringParam(password)) {
+        return res.status(400).render("register.ejs", {
+            error: "Name, email, and password are required."
+        });
+    }
 
     try {
         // check if the user already exists
